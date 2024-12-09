@@ -20,6 +20,8 @@ public class LetterReceiverController {
 
   @PostMapping()
   public ResponseEntity publishLetter(@Valid @RequestBody ChristmasLetterRequest letter) {
+
+    letterReceiverService.publishLetter(letter);
     return ResponseEntity.ok().build();
   }
 

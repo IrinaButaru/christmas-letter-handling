@@ -7,6 +7,10 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"  # external services port range
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+#      - LOCALSTACK_HOSTNAME=localhost.localstack.cloud
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
       - SERVICES=sns,sqs
       - DEBUG=${DEBUG:-1}
     volumes:
