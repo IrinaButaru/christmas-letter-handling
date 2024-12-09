@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorDto {
+public class ErrorResponse {
 
     private Integer status;
 

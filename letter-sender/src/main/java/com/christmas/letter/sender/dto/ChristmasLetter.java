@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChristmasLetterRequest {
+public class ChristmasLetter {
 
     @NotNull(message = "email.cannot.be.null")
     @Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "email.must.be.valid")

@@ -1,7 +1,7 @@
 package com.christmas.letter.sender.controller;
 
-import com.christmas.letter.sender.dto.ChristmasLetterRequest;
-import com.christmas.letter.sender.service.LetterReceiverService;
+import com.christmas.letter.sender.dto.ChristmasLetter;
+import com.christmas.letter.sender.service.LetterSenderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/letter")
 public class LetterReceiverController {
 
-  private final LetterReceiverService letterReceiverService;
+  private final LetterSenderService letterSenderService;
 
   @Autowired
-  public LetterReceiverController(LetterReceiverService letterReceiverService) {
-    this.letterReceiverService = letterReceiverService;
+  public LetterReceiverController(LetterSenderService letterSenderService) {
+    this.letterSenderService = letterSenderService;
   }
 
   @PostMapping()
-  public ResponseEntity publishLetter(@Valid @RequestBody ChristmasLetterRequest letter) {
+  public ResponseEntity publishLetter(@Valid @RequestBody ChristmasLetter letter) {
 
-    letterReceiverService.publishLetter(letter);
+    letterSenderService.publishLetter(letter);
     return ResponseEntity.ok().build();
   }
 

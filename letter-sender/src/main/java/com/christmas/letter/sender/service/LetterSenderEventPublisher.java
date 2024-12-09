@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LetterReceiverEventPublisher {
+public class LetterSenderEventPublisher {
 
     private final SnsTemplate snsTemplate;
     private final AWSSNSConfig awsConfig;
 
     @Autowired
-    public LetterReceiverEventPublisher(SnsTemplate snsTemplate, AWSSNSConfig awsConfig) {
+    public LetterSenderEventPublisher(SnsTemplate snsTemplate, AWSSNSConfig awsConfig) {
         this.snsTemplate = snsTemplate;
         this.awsConfig = awsConfig;
     }
