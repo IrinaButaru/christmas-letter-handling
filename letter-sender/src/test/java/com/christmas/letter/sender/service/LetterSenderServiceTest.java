@@ -1,5 +1,6 @@
 package com.christmas.letter.sender.service;
 
+import com.christmas.letter.sender.event.LetterSenderEventPublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/letter")
-public class LetterReceiverController {
+public class LetterSenderController {
 
   private final LetterSenderService letterSenderService;
 
-  @Autowired
-  public LetterReceiverController(LetterSenderService letterSenderService) {
+  public LetterSenderController(LetterSenderService letterSenderService) {
     this.letterSenderService = letterSenderService;
   }
 

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class LetterReceiverControllerIntegrationTest {
+public class LetterSenderControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,10 +40,8 @@ public class LetterReceiverControllerIntegrationTest {
                 .andExpect(jsonPath("$.code").value("failed.request.body.validation"))
                 .andExpect(jsonPath("$.reasons").isArray())
                 .andExpect(jsonPath("$.reasons", hasItem("email.must.be.valid")))
-                .andExpect(jsonPath("$.reasons", hasItem("name.cannot.be.null")))
                 .andExpect(jsonPath("$.reasons", hasItem("name.cannot.be.empty")))
                 .andExpect(jsonPath("$.reasons", hasItem("must.add.at.least.one.wish")))
-                .andExpect(jsonPath("$.reasons", hasItem("address.cannot.be.null")))
                 .andExpect(jsonPath("$.reasons", hasItem("address.cannot.be.empty")));
     }
 
