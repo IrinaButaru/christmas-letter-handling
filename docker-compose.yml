@@ -2,6 +2,9 @@ services:
   localstack:
     container_name: localstack
     image: localstack/localstack
+#    command:
+#      - chmod +x /etc/localstack/init/ready.d/localstack-setup.sh
+#      - chmod +x ./docker-local/localstack/localstack-setup.sh
     ports:
       - 4566:4566
     environment:
@@ -10,8 +13,9 @@ services:
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_DEFAULT_REGION=us-east-1
       - SERVICES=sns,sqs
-      - DEBUG=${DEBUG:-1}
+      - DEBUG=1
     volumes:
-#      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-#      - "/var/run/docker.sock:/var/run/docker.sock"
       - './docker-local/localstack/localstack-setup.sh:/etc/localstack/init/ready.d/localstack-setup.sh'
+
+
+
