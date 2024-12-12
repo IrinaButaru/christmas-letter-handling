@@ -18,4 +18,23 @@ echo "SQS queue '$queue_name' created successfully"
 awslocal sns subscribe --topic-arn ${topic_arn}  --protocol sqs --notification-endpoint ${notification_endpoint}
 echo "SQS queue '$queue_name' subcribed to SNS topic '$topic_name' successfully"
 
+#Create DynamoDB table
+awslocal dynamodb create-table --cli-input-json \
+'{
+    "TableName":"christmas_letter",
+    "KeySchema":[
+       {
+          "AttributeName":"id",
+          "KeyType":"HASH"
+       }
+    ],
+    "AttributeDefinitions":[
+       {
+          "AttributeName":"id",
+          "AttributeType":"S"
+       }
+    ],
+    "BillingMode":"PAY_PER_REQUEST"
+ }'
+
 echo "Initialization completed"

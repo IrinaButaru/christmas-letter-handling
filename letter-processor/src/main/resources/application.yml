@@ -6,6 +6,9 @@ spring:
         secret-key: ${AWS_SECRET_KEY}
       sqs:
         region: ${AWS_SQS_REGION}
+      dynamodb:
+        region: ${AWS_SQS_REGION}
+        url: ${AWS_DYNAMODB_URL}
 server:
   port: 8082
 
@@ -15,3 +18,4 @@ com:
       aws:
         sqs:
           queue-url: ${AWS_SQS_QUEUE_URL}
+          queue-name: ${AWS_SQS_QUEUE_NAME}
