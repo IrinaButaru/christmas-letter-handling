@@ -3,9 +3,10 @@ package com.christmas.letter.model.mapper;
 import com.christmas.letter.model.ChristmasLetter;
 import com.christmas.letter.model.ChristmasLetterEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ChristmasLetterMapper {
 
     ChristmasLetterMapper INSTANCE = Mappers.getMapper(ChristmasLetterMapper.class);
