@@ -16,6 +16,6 @@ public class ChristmasLetterTableNameResolver implements DynamoDbTableNameResolv
     }
 
     private Map<Class<?>, String> classTableNameMap() {
-        return Map.of(ChristmasLetterEntity.class, "christmas_letter");
+        return Map.of(ChristmasLetterEntity.class, ChristmasLetterEntity.TABLE_NAME);
     }
 }

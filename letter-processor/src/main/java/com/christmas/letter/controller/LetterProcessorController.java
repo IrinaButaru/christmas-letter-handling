@@ -1,11 +1,11 @@
 package com.christmas.letter.controller;
 
+import com.christmas.letter.model.ChristmasLetter;
+import com.christmas.letter.model.PaginatedRequest;
 import com.christmas.letter.service.LetterProcessorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test/letter")
@@ -21,9 +21,22 @@ public class LetterProcessorController {
     public ResponseEntity publishLetter() throws JsonProcessingException {
 
         //TODO: remove test endpoint
-        letterProcessorService.processChristmasLetter();
+        letterProcessorService.processLetter(null);
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<ChristmasLetter> getLetterByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(letterProcessorService.getLetterByEmail(email));
+    }
+
+    @GetMapping
+    public ResponseEntity getLetters(@RequestParam(required = false) Integer pageSize,
+                                     @RequestParam(required = false) String lastEvaluatedEmail,
+                                     @RequestParam(required = false) boolean previousPage) {
+
+        PaginatedRequest paginatedRequest = new PaginatedRequest(pageSize, lastEvaluatedEmail, previousPage);
+        return ResponseEntity.ok(letterProcessorService.getLetters(paginatedRequest));
+    }
 
 }
