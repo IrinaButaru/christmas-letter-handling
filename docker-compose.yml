@@ -2,17 +2,15 @@ services:
   localstack:
     container_name: localstack
     image: localstack/localstack
-#    command:
-#      - chmod +x /etc/localstack/init/ready.d/localstack-setup.sh
-#      - chmod +x ./docker-local/localstack/localstack-setup.sh
     ports:
       - 4566:4566
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
       - AWS_DEFAULT_REGION=us-east-1
-      - SERVICES=sns,sqs
+      - SERVICES=sns,sqs,dynamodb
       - DEBUG=1
     volumes:
       - './docker-local/localstack/localstack-setup.sh:/etc/localstack/init/ready.d/localstack-setup.sh'
