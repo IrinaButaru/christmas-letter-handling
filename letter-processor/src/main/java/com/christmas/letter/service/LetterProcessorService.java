@@ -1,15 +1,15 @@
 package com.christmas.letter.service;
 
-import com.christmas.letter.model.ChristmasLetter;
-import com.christmas.letter.model.ChristmasLetterEntity;
-import com.christmas.letter.model.PaginatedRequest;
+import com.christmas.letter.model.Letter;
+import com.christmas.letter.model.LetterEntity;
 import com.christmas.letter.model.PaginatedResponse;
 import com.christmas.letter.model.mapper.ChristmasLetterMapper;
-import com.christmas.letter.repository.ChristmasLetterRepository;
+import com.christmas.letter.repository.LetterRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 import software.amazon.awssdk.services.sqs.model.Message;
 
 import java.util.List;
@@ -18,44 +18,47 @@ import java.util.Objects;
 @Service
 public class LetterProcessorService {
 
-    private final ChristmasLetterRepository christmasLetterRepository;
+    private final LetterRepository letterRepository;
 
-    public LetterProcessorService(ChristmasLetterRepository christmasLetterRepository) {
-        this.christmasLetterRepository = christmasLetterRepository;
+    public LetterProcessorService(LetterRepository letterRepository) {
+        this.letterRepository = letterRepository;
     }
 
     //    @SqsListener("${com.christmas.letter.aws.sqs.queue-url}")
-    public ChristmasLetter processLetter(Message message) throws JsonProcessingException {
+    public Letter processLetter(Message message) throws JsonProcessingException {
         //TODO: remove test code
         Message message1 = getRandomLetterMessage();
 
-        ChristmasLetterEntity letter = Objects.requireNonNull(ChristmasLetterMapper.INSTANCE.objectToEntity(getMessageChristmasLetter(message1)));
-        return ChristmasLetterMapper.INSTANCE.entitytoObject(christmasLetterRepository.save(letter));
+        LetterEntity letter = Objects.requireNonNull(ChristmasLetterMapper.INSTANCE.objectToEntity(getMessageChristmasLetter(message1)));
+        return ChristmasLetterMapper.INSTANCE.entitytoObject(letterRepository.save(letter));
     }
 
-    public ChristmasLetter getLetterByEmail(String email) {
-        return ChristmasLetterMapper.INSTANCE.entitytoObject(christmasLetterRepository.getLetterByEmail(email));
+    public Letter getLetterByEmail(String email) throws Exception {
+        LetterEntity letterEntity = letterRepository.findById(email)
+                .orElseThrow(Exception::new);
+
+        return ChristmasLetterMapper.INSTANCE.entitytoObject(letterEntity);
     }
 
-    public PaginatedResponse getLetters(PaginatedRequest paginatedRequest) {
-        ScanResponse response = christmasLetterRepository.getLetters(paginatedRequest);
-        List<ChristmasLetter> letters = response
-                .items()
+    public PaginatedResponse getAllLetters(Pageable pageable) {
+        Page<LetterEntity> page = letterRepository.findAll(pageable);
+
+        List<Letter> letters = page
+                .getContent()
                 .stream()
-                .map(ChristmasLetterEntity::new)
                 .map(ChristmasLetterMapper.INSTANCE::entitytoObject)
                 .toList();
-        String lastReturnedEmail = response.lastEvaluatedKey().isEmpty() ? "" : response.lastEvaluatedKey().get(ChristmasLetterEntity.EMAIL_KEY).s();
 
         return PaginatedResponse.builder()
                 .letters(letters)
-                .lastReturnedEmail(lastReturnedEmail)
+                .totalPages(page.getTotalPages())
+                .last(page.isLast())
                 .build();
     }
 
-    public ChristmasLetter getMessageChristmasLetter(Message message) throws JsonProcessingException {
+    public Letter getMessageChristmasLetter(Message message) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(message.body(), ChristmasLetter.class);
+        return mapper.readValue(message.body(), Letter.class);
     }
 
     //TODO: remove test method

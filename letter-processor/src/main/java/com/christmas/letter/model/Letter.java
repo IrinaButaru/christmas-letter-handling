@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChristmasLetter {
+public class Letter {
 
     private String email;
 

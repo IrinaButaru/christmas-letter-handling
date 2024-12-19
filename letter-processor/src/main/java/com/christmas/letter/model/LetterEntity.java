@@ -1,10 +1,12 @@
 package com.christmas.letter.model;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -15,8 +17,8 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamoDbBean
-public class ChristmasLetterEntity {
+@DynamoDBTable(tableName = "christmas_letter")
+public class LetterEntity {
     public static final String TABLE_NAME = "christmas_letter";
     public static final String EMAIL_KEY = "email";
     public static final String NAME_KEY = "name";
@@ -28,16 +30,20 @@ public class ChristmasLetterEntity {
 
 
 //    @Getter(onMethod_ = {@DynamoDbSecondaryPartitionKey(indexNames = "email-index"),@DynamoDbSortKey})
+    @DynamoDBHashKey(attributeName = "email")
     @Getter(onMethod_ = {@DynamoDbPartitionKey})
     private String email;
 
+    @DynamoDBAttribute(attributeName = "name")
     private String name;
 
+    @DynamoDBAttribute(attributeName = "wishes")
     private List<String> wishes;
 
+    @DynamoDBAttribute(attributeName = "delivery_address")
     private String deliveryAddress;
 
-    public ChristmasLetterEntity(Map<String, AttributeValue> stringAttributeValueMap) {
+    public LetterEntity(Map<String, AttributeValue> stringAttributeValueMap) {
         this.email = stringAttributeValueMap.containsKey(EMAIL_KEY) ? stringAttributeValueMap.get(EMAIL_KEY).s() : "";
         this.name = stringAttributeValueMap.containsKey(NAME_KEY) ? stringAttributeValueMap.get(NAME_KEY).s(): "";
         this.wishes = stringAttributeValueMap.containsKey(WISHES_KEY) ?

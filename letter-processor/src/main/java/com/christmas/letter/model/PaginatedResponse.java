@@ -13,7 +13,9 @@ import java.util.List;
 @Builder
 public class PaginatedResponse {
 
-    private List<ChristmasLetter> letters;
+    private List<Letter> letters;
 
-    private String lastReturnedEmail;
+    private Integer totalPages;
+
+    private Boolean last;
 }

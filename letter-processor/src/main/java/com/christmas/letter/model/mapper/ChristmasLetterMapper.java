@@ -1,7 +1,7 @@
 package com.christmas.letter.model.mapper;
 
-import com.christmas.letter.model.ChristmasLetter;
-import com.christmas.letter.model.ChristmasLetterEntity;
+import com.christmas.letter.model.Letter;
+import com.christmas.letter.model.LetterEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
@@ -11,6 +11,6 @@ public interface ChristmasLetterMapper {
 
     ChristmasLetterMapper INSTANCE = Mappers.getMapper(ChristmasLetterMapper.class);
 
-    ChristmasLetterEntity objectToEntity(ChristmasLetter christmasLetter);
-    ChristmasLetter entitytoObject(ChristmasLetterEntity christmasLetterEntity);
+    LetterEntity objectToEntity(Letter letter);
+    Letter entitytoObject(LetterEntity letterEntity);
 }
