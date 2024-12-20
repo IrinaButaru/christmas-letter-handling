@@ -7,9 +7,9 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface ChristmasLetterMapper {
+public interface DynamoDbLetterMapper {
 
-    ChristmasLetterMapper INSTANCE = Mappers.getMapper(ChristmasLetterMapper.class);
+    DynamoDbLetterMapper INSTANCE = Mappers.getMapper(DynamoDbLetterMapper.class);
 
     LetterEntity objectToEntity(Letter letter);
     Letter entitytoObject(LetterEntity letterEntity);

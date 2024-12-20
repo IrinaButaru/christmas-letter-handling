@@ -1,6 +1,7 @@
 package com.christmas.letter.sender.event;
 
 import com.christmas.letter.sender.configuration.AWSSNSConfig;
+import com.christmas.letter.sender.dto.ChristmasLetter;
 import io.awspring.cloud.sns.core.SnsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class LetterSenderEventPublisher {
         this.awsConfig = awsConfig;
     }
 
-    public void publish(LetterEvent letterEvent) {
+    public void publish(ChristmasLetter letterEvent) {
         snsTemplate.convertAndSend(awsConfig.getTopicArn(), letterEvent);
     }
 }
