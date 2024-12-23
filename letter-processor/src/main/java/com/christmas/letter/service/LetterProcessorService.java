@@ -1,9 +1,10 @@
 package com.christmas.letter.service;
 
+import com.christmas.letter.exception.NotFoundException;
 import com.christmas.letter.model.Letter;
 import com.christmas.letter.model.LetterEntity;
-import com.christmas.letter.model.PaginatedResponse;
 import com.christmas.letter.model.mapper.DynamoDbLetterMapper;
+import com.christmas.letter.model.response.PaginatedResponse;
 import com.christmas.letter.repository.LetterRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,9 @@ public class LetterProcessorService {
         return DynamoDbLetterMapper.INSTANCE.entitytoObject(letterRepository.save(letterEntity));
     }
 
-    public Letter getLetterByEmail(String email) throws Exception {
+    public Letter getLetterByEmail(String email) {
         LetterEntity letterEntity = letterRepository.findById(email)
-                .orElseThrow(Exception::new);
+                .orElseThrow(() -> new NotFoundException(String.format("Could not find letter for email %s ", email)));
 
         return DynamoDbLetterMapper.INSTANCE.entitytoObject(letterEntity);
     }

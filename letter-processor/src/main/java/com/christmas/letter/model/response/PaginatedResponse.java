@@ -1,5 +1,6 @@
-package com.christmas.letter.model;
+package com.christmas.letter.model.response;
 
+import com.christmas.letter.model.Letter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

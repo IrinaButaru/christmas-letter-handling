@@ -1,7 +1,7 @@
 package com.christmas.letter.controller;
 
 import com.christmas.letter.model.Letter;
-import com.christmas.letter.model.PaginatedResponse;
+import com.christmas.letter.model.response.PaginatedResponse;
 import com.christmas.letter.service.LetterProcessorService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
