@@ -19,7 +19,7 @@ public class SqsMessageMapper extends SqsMessagingMessageConverter {
         return getMessageFromBody(body);
     }
 
-    private String getMessageFromBody(String message) {
+    public String getMessageFromBody(String message) {
         try {
             JsonNode node = objectMapper.readTree(message);
 
