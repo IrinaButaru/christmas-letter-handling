@@ -1,8 +1,11 @@
-package com.christmas.letter.sender.dto;
+package com.christmas.letter.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChristmasLetter {
+public class Letter {
 
     @Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "email.must.be.valid")
     private String email;
@@ -23,6 +26,5 @@ public class ChristmasLetter {
 
     @NotEmpty(message = "address.cannot.be.empty")
     private String deliveryAddress;
-
 
 }

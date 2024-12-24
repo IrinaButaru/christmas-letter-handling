@@ -3,10 +3,10 @@
 echo "Initialization started"
 
 region="us-east-1"
-topic_name="christmas-letter"
-topic_arn="arn:aws:sns:us-east-1:000000000000:christmas-letter"
-queue_name="christmas-letters-queue"
-notification_endpoint="arn:aws:sqs:us-east-1:000000000000:christmas-letters-queue"
+topic_name="test-topic"
+topic_arn="arn:aws:sns:us-east-1:000000000000:test-topic"
+queue_name="test-queue"
+notification_endpoint="arn:aws:sqs:us-east-1:000000000000:test-queue"
 
 # Create SNS topic
 awslocal sns create-topic --name ${topic_name}
@@ -36,18 +36,5 @@ awslocal dynamodb create-table --cli-input-json \
     ],
     "BillingMode":"PAY_PER_REQUEST"
  }'
-
- #    "KeySchema":[
- #       {
- #          "AttributeName":"id",
- #          "KeyType":"HASH"
- #       }
- #    ],
- #    "AttributeDefinitions":[
- #       {
- #          "AttributeName":"id",
- #          "AttributeType":"S"
- #       }
- #    ],
 
 echo "Initialization completed"
