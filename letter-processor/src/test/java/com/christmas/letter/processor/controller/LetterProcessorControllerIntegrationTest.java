@@ -43,6 +43,7 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
 
     @AfterAll
     public static void cleanData(@Autowired LetterRepository letterRepository) {
+
         letterRepository.deleteAll();
     }
 

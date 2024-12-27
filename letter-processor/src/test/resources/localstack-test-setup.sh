@@ -37,12 +37,4 @@ awslocal dynamodb create-table --cli-input-json \
     "BillingMode":"PAY_PER_REQUEST"
  }'
 
-#Add test data to dynamodb table
-#awslocal dynamodb put-item --table-name christmas_letter --region ${region} --cli-input-json \
-#'
-#  { "email":{"S":"ok@email.com"},
-#    "name":{"S":"Found Email"}
-#  }
-#'
-
 echo "Initialization completed"

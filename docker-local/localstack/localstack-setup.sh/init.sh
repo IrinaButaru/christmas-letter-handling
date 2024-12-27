@@ -37,17 +37,4 @@ awslocal dynamodb create-table --cli-input-json \
     "BillingMode":"PAY_PER_REQUEST"
  }'
 
- #    "KeySchema":[
- #       {
- #          "AttributeName":"id",
- #          "KeyType":"HASH"
- #       }
- #    ],
- #    "AttributeDefinitions":[
- #       {
- #          "AttributeName":"id",
- #          "AttributeType":"S"
- #       }
- #    ],
-
 echo "Initialization completed"

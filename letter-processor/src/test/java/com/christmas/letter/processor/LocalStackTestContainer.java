@@ -1,5 +1,6 @@
 package com.christmas.letter.processor;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -41,9 +42,9 @@ public class LocalStackTestContainer {
             localStackContainer.start();
     }
 
-//    @AfterAll
-//    static void stopLocalStackContainer() {
-//        if(localStackContainer.isRunning())
-//            localStackContainer.stop();
-//    }
+    @AfterAll
+    static void stopLocalStackContainer() {
+        if(localStackContainer.isRunning())
+            localStackContainer.stop();
+    }
 }
