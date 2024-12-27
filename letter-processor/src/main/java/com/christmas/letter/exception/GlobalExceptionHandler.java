@@ -14,6 +14,9 @@ import java.util.List;
 @ResponseBody
 public class GlobalExceptionHandler {
 
+    public static final String LETTER_NOT_FOUND_CODE = "letter.not.found";
+    public static final String LETTER_NOT_FOUND_MESSAGE = "Could not find letter for email %s ";
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(value = HttpStatus.EXPECTATION_FAILED)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException exception) {
@@ -24,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NotFoundException exception) {
-        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), "letter.not.found", List.of(exception.getMessage()));
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), LETTER_NOT_FOUND_CODE, List.of(exception.getMessage()));
     }
 
     @ExceptionHandler(SqsMessageDeserializationException.class)

@@ -1,5 +1,6 @@
 package com.christmas.letter.processor.service;
 
+import com.christmas.letter.exception.GlobalExceptionHandler;
 import com.christmas.letter.exception.NotFoundException;
 import com.christmas.letter.model.Letter;
 import com.christmas.letter.model.LetterEntity;
@@ -20,10 +21,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class LetterProcessorServiceTest {
@@ -54,13 +55,13 @@ public class LetterProcessorServiceTest {
 
         assertThatThrownBy(() -> letterProcessorService.getLetterByEmail(email))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage(String.format("Could not find letter for email %s ", email));
+                .hasMessage(String.format(GlobalExceptionHandler.LETTER_NOT_FOUND_MESSAGE, email));
     }
 
     @Test
     void getAllLetters_WhenPageRequested_ShouldReturnPaginatedResponse() {
-        Pageable pageable = Pageable.ofSize(10).withPage(1);
-        List<Letter> letters = LetterTestHelper.createLetters();
+        Pageable pageable = Pageable.ofSize(10).withPage(0);
+        List<Letter> letters = LetterTestHelper.createLetters(10);
         List<LetterEntity> entities = letters.stream().map(DynamoDbLetterMapper.INSTANCE::objectToEntity).toList();
         Page<LetterEntity> page = new PageImpl<>(entities);
         when(letterRepository.findAll(pageable)).thenReturn(page);

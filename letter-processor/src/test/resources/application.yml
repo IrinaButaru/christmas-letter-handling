@@ -1,0 +1,7 @@
+com:
+  christmas:
+    letter:
+      aws:
+        sqs:
+          queue-url: test-queue
+          queue-name: arn:aws:sqs:us-east-1:000000000000:test-queue

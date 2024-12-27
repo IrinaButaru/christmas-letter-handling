@@ -4,6 +4,7 @@ import com.christmas.letter.model.Letter;
 import lombok.experimental.UtilityClass;
 import net.bytebuddy.utility.RandomString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
@@ -22,15 +23,12 @@ public class LetterTestHelper {
                 .build();
     }
 
-    public static List<Letter> createLetters() {
-        return List.of(createLetter(String.format("%s@email.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@email.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@gmail.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@outlook.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@example.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@yahoo.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@email.com", RandomString.make()), RandomString.make()),
-                createLetter(String.format("%s@email.com", RandomString.make()), RandomString.make()));
+    public static List<Letter> createLetters(int itemNum) {
+        ArrayList<Letter> letters = new ArrayList();
+        letters.add(createLetter("ok@email.com", "Existing Name"));
+        for (int iterator = 1; iterator < itemNum; iterator++) {
+            letters.add(createLetter(String.format("%s@email.com", RandomString.make()), RandomString.make()));
+        }
+        return letters;
     }
-
 }

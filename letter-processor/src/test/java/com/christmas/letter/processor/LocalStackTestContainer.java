@@ -3,9 +3,9 @@ package com.christmas.letter.processor;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
@@ -36,8 +36,14 @@ public class LocalStackTestContainer {
     }
 
     @BeforeAll
-    static void startLocalStackContainer(){
-        if(!localStackContainer.isRunning())
+    static void startLocalStackContainer() {
+        if (!localStackContainer.isRunning())
             localStackContainer.start();
     }
+
+//    @AfterAll
+//    static void stopLocalStackContainer() {
+//        if(localStackContainer.isRunning())
+//            localStackContainer.stop();
+//    }
 }

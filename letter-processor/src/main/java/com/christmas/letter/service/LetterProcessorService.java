@@ -1,5 +1,6 @@
 package com.christmas.letter.service;
 
+import com.christmas.letter.exception.GlobalExceptionHandler;
 import com.christmas.letter.exception.NotFoundException;
 import com.christmas.letter.model.Letter;
 import com.christmas.letter.model.LetterEntity;
@@ -27,7 +28,7 @@ public class LetterProcessorService {
 
     public Letter getLetterByEmail(String email) {
         LetterEntity letterEntity = letterRepository.findById(email)
-                .orElseThrow(() -> new NotFoundException(String.format("Could not find letter for email %s ", email)));
+                .orElseThrow(() -> new NotFoundException(String.format(GlobalExceptionHandler.LETTER_NOT_FOUND_MESSAGE, email)));
 
         return DynamoDbLetterMapper.INSTANCE.entitytoObject(letterEntity);
     }
