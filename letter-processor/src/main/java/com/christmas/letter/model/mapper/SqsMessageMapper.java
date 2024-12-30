@@ -23,11 +23,9 @@ public class SqsMessageMapper extends SqsMessagingMessageConverter {
         try {
             JsonNode node = objectMapper.readTree(message);
 
-            return node.path("Message")
-                    .asText();
+            return node.path("Message").asText();
         } catch (JsonProcessingException ex) {
             throw new SqsMessageDeserializationException("Could not process letter from SQS message");
         }
     }
-
 }

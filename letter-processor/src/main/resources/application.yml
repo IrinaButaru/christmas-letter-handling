@@ -20,3 +20,4 @@ com:
         sqs:
           queue-url: ${AWS_SQS_QUEUE_URL}
           queue-name: ${AWS_SQS_QUEUE_NAME}
+          dlq-url: ${AWS_SQS_DLQ_URL}
