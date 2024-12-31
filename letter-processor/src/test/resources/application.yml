@@ -1,3 +1,9 @@
+spring:
+  mail:
+    host: dummy
+    username: test@mail.com
+    password: test
+
 com:
   christmas:
     letter:
@@ -6,3 +12,6 @@ com:
           queue-url: test-queue
           queue-name: arn:aws:sqs:us-east-1:000000000000:test-queue
           dlq-url: test-dlq
+      email:
+        recipients: > 
+          recipient@mail.com
