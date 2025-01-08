@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      sqs:
+        region: ${AWS_SQS_REGION}
+        endpoint: http://localhost:4566
+      dynamodb:
+        region: ${AWS_SQS_REGION}
+        url: ${AWS_DYNAMODB_URL}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8082
+
+com:
+  christmas:
+    letter:
+      aws:
+        sqs:
+          queue-url: ${AWS_SQS_QUEUE_URL}
+          queue-name: ${AWS_SQS_QUEUE_NAME}
+          dlq-url: ${AWS_SQS_DLQ_URL}
+      email:
+        recipients: >
+          santa@gmail.com
+          elf@gmail.com
+          

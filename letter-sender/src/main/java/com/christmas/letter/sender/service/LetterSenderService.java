@@ -1,7 +1,6 @@
 package com.christmas.letter.sender.service;
 
 import com.christmas.letter.sender.dto.ChristmasLetter;
-import com.christmas.letter.sender.event.LetterEvent;
 import com.christmas.letter.sender.event.LetterSenderEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,6 @@ public class LetterSenderService {
     }
 
     public void publishLetter(ChristmasLetter christmasLetter) {
-        publisher.publish(new LetterEvent(christmasLetter));
+        publisher.publish(christmasLetter);
     }
 }
