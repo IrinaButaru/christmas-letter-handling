@@ -34,6 +34,4 @@ com:
           dlq-url: ${AWS_SQS_DLQ_URL}
       email:
         recipients: >
-          santa@gmail.com
-          elf@gmail.com
-          
+          ina.butaru@gmail.com
