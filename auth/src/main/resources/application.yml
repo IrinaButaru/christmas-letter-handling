@@ -5,12 +5,12 @@ spring:
         access-key: ${AWS_ACCESS_KEY}
         secret-key: ${AWS_SECRET_KEY}
       dynamodb:
-        region: ${AWS_SQS_REGION}
+        region: ${AWS_DYNAMODB_REGION}
         url: ${AWS_DYNAMODB_URL}
 server:
   port: 8083
 
 security:
   jwt:
-    secret-key: ""
-    expiration-time: ""
+    secret-key: ${JWT_SECRET_KEY}
+    expiration-time: 1800000

@@ -21,7 +21,7 @@ public class UserInfoDetails implements UserDetails {
         this.password = userEntity.getPassword();
         this.authorities = userEntity.getRoles()
                 .stream()
-                .map(Role::toString)
+//                .map(Role::toString)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

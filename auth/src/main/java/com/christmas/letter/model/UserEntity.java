@@ -12,18 +12,18 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamoDBTable(tableName = "user")
+@DynamoDBTable(tableName = "users")
 public class UserEntity {
 
     @DynamoDBHashKey(attributeName = "email")
     private String email;
 
-    @DynamoDBHashKey(attributeName = "name")
+    @DynamoDBAttribute(attributeName = "name")
     private String name;
 
     @DynamoDBAttribute(attributeName = "password")
     private String password;
 
     @DynamoDBAttribute(attributeName = "roles")
-    private List<Role> roles;
+    private List<String> roles;
 }

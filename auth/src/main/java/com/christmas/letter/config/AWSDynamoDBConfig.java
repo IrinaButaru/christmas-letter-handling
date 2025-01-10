@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableDynamoDBRepositories(basePackageClasses = UserRepository.class)
 public class AWSDynamoDBConfig {
 
-    @Value("${spring.cloud.aws.sqs.region}")
+    @Value("${spring.cloud.aws.dynamodb.region}")
     private String region;
 
     @Value("${spring.cloud.aws.dynamodb.url}")

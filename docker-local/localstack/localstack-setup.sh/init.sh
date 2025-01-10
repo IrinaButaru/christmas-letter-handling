@@ -28,7 +28,7 @@ awslocal sqs set-queue-attributes \
     "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:christmas-letters-dlq\",\"maxReceiveCount\":\"1\"}"
 }'
 
-#Create DynamoDB table
+#Create DynamoDB christmas_letter table
 awslocal dynamodb create-table --cli-input-json \
 '{
     "TableName":"christmas_letter",
@@ -46,5 +46,24 @@ awslocal dynamodb create-table --cli-input-json \
     ],
     "BillingMode":"PAY_PER_REQUEST"
  }'
+
+ #Create DynamoDB users table
+ awslocal dynamodb create-table --cli-input-json \
+ '{
+     "TableName":"users",
+     "KeySchema":[
+        {
+           "AttributeName":"email",
+           "KeyType":"HASH"
+        }
+     ],
+     "AttributeDefinitions":[
+        {
+           "AttributeName":"email",
+           "AttributeType":"S"
+        }
+     ],
+     "BillingMode":"PAY_PER_REQUEST"
+  }'
 
 echo "Initialization completed"
