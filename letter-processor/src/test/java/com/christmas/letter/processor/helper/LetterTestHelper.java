@@ -1,6 +1,6 @@
 package com.christmas.letter.processor.helper;
 
-import com.christmas.letter.model.Letter;
+import com.christmas.letter.model.dto.Letter;
 import lombok.experimental.UtilityClass;
 import net.bytebuddy.utility.RandomString;
 

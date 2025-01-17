@@ -1,6 +1,6 @@
 package com.christmas.letter.service;
 
-import com.christmas.letter.model.Letter;
+import com.christmas.letter.model.dto.Letter;
 import com.christmas.letter.model.mapper.DynamoDbLetterMapper;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import jakarta.validation.Valid;

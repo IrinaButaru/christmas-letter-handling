@@ -34,6 +34,9 @@ com:
           dlq-url: ${AWS_SQS_DLQ_URL}
       email:
         recipients: >
-          santa@gmail.com
-          elf@gmail.com
-          
+          ina.butaru@gmail.com
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    expiration-time: 1800000

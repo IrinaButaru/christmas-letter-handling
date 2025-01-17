@@ -13,11 +13,11 @@ import java.util.List;
 @Log4j2
 @Service
 public class LetterEmailService {
-    public static String EMAIL_BODY_TEMPLATE = "Hello, Santa!\n\n"
+    public static final  String EMAIL_BODY_TEMPLATE = "Hello, Santa!\n\n"
             + "You have received a letter that we could not process and it requires your attention. Here are the details:\n"
             + "%s";
-    public static String EMAIL_SUBJECT = "Wishes Letter";
-    public static String SENT_EMAIL_LOG = "Message sent via email";
+    public static final String EMAIL_SUBJECT = "Wishes Letter";
+    public static final String SENT_EMAIL_LOG = "Message sent via email";
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -25,7 +25,7 @@ public class LetterEmailService {
     @Value("${com.christmas.letter.email.recipients}")
     private List<String> recipients;
 
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     public LetterEmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -45,6 +45,7 @@ public class LetterEmailService {
             javaMailSender.send(mailMessage);
             log.info(SENT_EMAIL_LOG);
         } catch (Exception e) {
+            log.error("Could not send email: " + e.getStackTrace());
             throw new IllegalStateException("Could not send email");
         }
     }

@@ -1,11 +1,13 @@
 package com.christmas.letter.processor.controller;
 
 import com.christmas.letter.exception.GlobalExceptionHandler;
-import com.christmas.letter.model.LetterEntity;
-import com.christmas.letter.model.mapper.DynamoDbLetterMapper;
 import com.christmas.letter.processor.LocalStackTestContainer;
-import com.christmas.letter.processor.helper.LetterTestHelper;
+import com.christmas.letter.processor.helper.UserTestHelper;
+import com.christmas.letter.processor.security.annotation.WithElfUser;
+import com.christmas.letter.processor.security.annotation.WithGuestUser;
+import com.christmas.letter.processor.security.annotation.WithSantaUser;
 import com.christmas.letter.repository.LetterRepository;
+import com.christmas.letter.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -36,22 +36,73 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
     @Autowired
     private LetterRepository letterRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeAll
-    public static void initData(@Autowired LetterRepository letterRepository) {
-        letterRepository.saveAll(getLetterEntities());
+    public static void initData(@Autowired LetterRepository letterRepository,
+                                @Autowired UserRepository userRepository) {
+        letterRepository.saveAll(UserTestHelper.getLetterEntities());
+        userRepository.saveAll(UserTestHelper.getUserEntities());
     }
 
+
     @AfterAll
-    public static void cleanData(@Autowired LetterRepository letterRepository) {
+    public static void cleanData(@Autowired LetterRepository letterRepository,
+                                 @Autowired UserRepository userRepository) {
 
         letterRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
-    public void getLetterByEmail_WhenOK_ShouldReturnLetter() throws Exception {
+    public void getRequests_WhenNotAuthenticated_ShouldReturnError() throws Exception {
+        String email = "ok@email.com";
+        Pageable pageable = Pageable.ofSize(5).withPage(0);
+
+        mockMvc.perform(get("/processor/letters/{email}", email))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value(GlobalExceptionHandler.UNAUTHORIZED_CODE))
+                .andExpect(jsonPath("$.reasons").isArray())
+                .andExpect(jsonPath("$.reasons", hasItem(GlobalExceptionHandler.UNAUTHORIZED_MESSAGE)));
+
+
+        mockMvc.perform(get("/processor/letters")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value(GlobalExceptionHandler.UNAUTHORIZED_CODE))
+                .andExpect(jsonPath("$.reasons").isArray())
+                .andExpect(jsonPath("$.reasons", hasItem(GlobalExceptionHandler.UNAUTHORIZED_MESSAGE)));
+    }
+
+    @Test
+    @WithGuestUser
+    public void getRequests_WhenUnauthorized_ShouldReturnError() throws Exception {
+        String email = "ok@email.com";
+        Pageable pageable = Pageable.ofSize(5).withPage(0);
+
+        mockMvc.perform(get("/processor/letters/{email}", email))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value(GlobalExceptionHandler.ACCESS_DENIED_CODE))
+                .andExpect(jsonPath("$.reasons").isArray())
+                .andExpect(jsonPath("$.reasons", hasItem(GlobalExceptionHandler.ACCESS_DENIED_MESSAGE)));
+
+        mockMvc.perform(get("/processor/letters")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value(GlobalExceptionHandler.ACCESS_DENIED_CODE))
+                .andExpect(jsonPath("$.reasons").isArray())
+                .andExpect(jsonPath("$.reasons", hasItem(GlobalExceptionHandler.ACCESS_DENIED_MESSAGE)));
+    }
+
+    @Test
+    @WithSantaUser
+    public void getLetterByEmail_WhenSanta_ShouldReturnLetter() throws Exception {
         String email = "ok@email.com";
 
-        mockMvc.perform(get("/letter/{email}", email))
+        mockMvc.perform(get("/processor/letters/{email}", email))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(email))
                 .andExpect(jsonPath("$.name").value("Existing Name"))
@@ -63,10 +114,27 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
     }
 
     @Test
+    @WithElfUser
+    public void getLetterByEmail_WhenElf_ShouldReturnLetter() throws Exception {
+        String email = "ok@email.com";
+
+        mockMvc.perform(get("/processor/letters/{email}", email))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.name").value("Existing Name"))
+                .andExpect(jsonPath("$.wishes").isArray())
+                .andExpect(jsonPath("$.wishes", hasItem("gift")))
+                .andExpect(jsonPath("$.wishes", hasItem("another gift")))
+                .andExpect(jsonPath("$.deliveryAddress").value("test street no. 7"));
+
+    }
+
+    @Test
+    @WithSantaUser
     public void getLetterByEmail_WhenInexistentEmail_ShouldReturnError() throws Exception {
         String email = "inexisting@email.com";
 
-        mockMvc.perform(get("/letter/{email}", email))
+        mockMvc.perform(get("/processor/letters/{email}", email))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404))
                 .andExpect(jsonPath("$.code").value(GlobalExceptionHandler.LETTER_NOT_FOUND_CODE))
@@ -76,10 +144,11 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
     }
 
     @Test
-    public void getAllLetters_WhenOK_ShouldReturnPaginatedResponse() throws Exception {
+    @WithSantaUser
+    public void getAllLetters_WhenSanta_ShouldReturnPaginatedResponse() throws Exception {
         Pageable pageable = Pageable.ofSize(5).withPage(0);
 
-        mockMvc.perform(get("/letter")
+        mockMvc.perform(get("/processor/letters")
                         .param("page", String.valueOf(pageable.getPageNumber()))
                         .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
@@ -90,7 +159,7 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
 
         pageable = pageable.withPage(1);
 
-        mockMvc.perform(get("/letter")
+        mockMvc.perform(get("/processor/letters")
                         .param("page", String.valueOf(pageable.getPageNumber()))
                         .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
@@ -102,12 +171,40 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
     }
 
     @Test
+    @WithElfUser
+    public void getAllLetters_WhenElf_ShouldReturnPaginatedResponse() throws Exception {
+        Pageable pageable = Pageable.ofSize(5).withPage(0);
+
+        mockMvc.perform(get("/processor/letters")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.letters").isArray())
+                .andExpect(jsonPath("$.letters", hasSize(5)))
+                .andExpect(jsonPath("$.totalPages").value(2))
+                .andExpect(jsonPath("$.last").value(false));
+
+        pageable = pageable.withPage(1);
+
+        mockMvc.perform(get("/processor/letters")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.letters").isArray())
+                .andExpect(jsonPath("$.letters", hasSize(4)))
+                .andExpect(jsonPath("$.totalPages").value(2))
+                .andExpect(jsonPath("$.last").value(true));
+
+    }
+
+    @Test
+    @WithSantaUser
     public void getAllLetters_WhenNoLetters_ShouldReturnZeroLetters() throws Exception {
         letterRepository.deleteAll();
 
         Pageable pageable = Pageable.ofSize(5).withPage(0);
 
-        mockMvc.perform(get("/letter")
+        mockMvc.perform(get("/processor/letters")
                         .param("page", String.valueOf(pageable.getPageNumber()))
                         .param("size", String.valueOf(pageable.getPageSize())))
                 .andExpect(status().isOk())
@@ -117,11 +214,6 @@ public class LetterProcessorControllerIntegrationTest extends LocalStackTestCont
                 .andExpect(jsonPath("$.last").value(true));
     }
 
-    public static List<LetterEntity> getLetterEntities() {
-        return LetterTestHelper.createLetters(9)
-                .stream()
-                .map(DynamoDbLetterMapper.INSTANCE::objectToEntity)
-                .toList();
-    }
+
 
 }

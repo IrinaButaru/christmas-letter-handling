@@ -1,6 +1,6 @@
 package com.christmas.letter.model.response;
 
-import com.christmas.letter.model.Letter;
+import com.christmas.letter.model.dto.Letter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

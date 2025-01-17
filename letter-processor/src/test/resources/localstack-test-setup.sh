@@ -48,4 +48,23 @@ awslocal dynamodb create-table --cli-input-json \
     "BillingMode":"PAY_PER_REQUEST"
  }'
 
+ #Create DynamoDB users table
+ awslocal dynamodb create-table --cli-input-json \
+ '{
+     "TableName":"users",
+     "KeySchema":[
+        {
+           "AttributeName":"email",
+           "KeyType":"HASH"
+        }
+     ],
+     "AttributeDefinitions":[
+        {
+           "AttributeName":"email",
+           "AttributeType":"S"
+        }
+     ],
+     "BillingMode":"PAY_PER_REQUEST"
+  }'
+
 echo "Initialization completed"

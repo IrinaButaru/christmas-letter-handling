@@ -1,6 +1,6 @@
 package com.christmas.letter.processor.service;
 
-import com.christmas.letter.model.LetterEmail;
+import com.christmas.letter.model.dto.LetterEmail;
 import com.christmas.letter.service.LetterDLQListener;
 import com.christmas.letter.service.LetterEmailService;
 import org.junit.jupiter.api.Test;

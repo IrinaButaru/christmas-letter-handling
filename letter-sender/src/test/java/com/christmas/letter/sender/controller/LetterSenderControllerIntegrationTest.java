@@ -32,7 +32,7 @@ public class LetterSenderControllerIntegrationTest {
 
     @Test
     public void publishLetter_WhenBadRequest_ShouldReturnErrorResponse() throws Exception {
-        mockMvc.perform(post("/letter")
+        mockMvc.perform(post("/sender/letters")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getBadChristmasLetterRequest()))
                 .andExpect(status().isBadRequest())
@@ -52,7 +52,7 @@ public class LetterSenderControllerIntegrationTest {
         String requestBodyString = getChristmasLetterRequest();
         doThrow(NotFoundException.class).when(letterSenderService).publishLetter(requestBody);
 
-        mockMvc.perform(post("/letter")
+        mockMvc.perform(post("/sender/letters")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBodyString))
                 .andExpect(status().isNotFound())
@@ -62,7 +62,7 @@ public class LetterSenderControllerIntegrationTest {
 
     @Test
     public void publishLetter_WhenOK_ShouldReturnSuccessResponse() throws Exception {
-        mockMvc.perform(post("/letter")
+        mockMvc.perform(post("/sender/letters")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getChristmasLetterRequest()))
                 .andExpect(status().isOk());
