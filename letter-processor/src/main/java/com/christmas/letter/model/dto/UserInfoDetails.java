@@ -1,5 +1,6 @@
-package com.christmas.letter.model;
+package com.christmas.letter.model.dto;
 
+import com.christmas.letter.model.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

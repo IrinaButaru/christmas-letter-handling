@@ -35,3 +35,8 @@ com:
       email:
         recipients: >
           ina.butaru@gmail.com
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    expiration-time: 1800000

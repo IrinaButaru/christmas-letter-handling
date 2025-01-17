@@ -1,7 +1,7 @@
 package com.christmas.letter.processor.service;
 
-import com.christmas.letter.model.Letter;
-import com.christmas.letter.model.LetterEntity;
+import com.christmas.letter.model.dto.Letter;
+import com.christmas.letter.model.entity.LetterEntity;
 import com.christmas.letter.processor.LocalStackTestContainer;
 import com.christmas.letter.processor.helper.LetterTestHelper;
 import com.christmas.letter.processor.helper.MailpitClient;

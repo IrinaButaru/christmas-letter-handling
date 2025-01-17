@@ -2,8 +2,8 @@ package com.christmas.letter.processor.service;
 
 import com.christmas.letter.exception.GlobalExceptionHandler;
 import com.christmas.letter.exception.NotFoundException;
-import com.christmas.letter.model.Letter;
-import com.christmas.letter.model.LetterEntity;
+import com.christmas.letter.model.dto.Letter;
+import com.christmas.letter.model.entity.LetterEntity;
 import com.christmas.letter.model.mapper.DynamoDbLetterMapper;
 import com.christmas.letter.model.response.PaginatedResponse;
 import com.christmas.letter.processor.helper.LetterTestHelper;

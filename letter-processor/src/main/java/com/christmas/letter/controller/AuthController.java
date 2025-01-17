@@ -1,7 +1,7 @@
 package com.christmas.letter.controller;
 
 import com.christmas.letter.model.AuthRequest;
-import com.christmas.letter.model.UserEntity;
+import com.christmas.letter.model.entity.UserEntity;
 import com.christmas.letter.model.response.AuthResponse;
 import com.christmas.letter.service.AuthService;
 import jakarta.validation.Valid;

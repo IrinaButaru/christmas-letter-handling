@@ -1,4 +1,4 @@
-package com.christmas.letter.model;
+package com.christmas.letter.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

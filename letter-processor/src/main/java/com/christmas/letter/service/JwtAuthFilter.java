@@ -1,12 +1,11 @@
 package com.christmas.letter.service;
 
-import com.christmas.letter.exception.GlobalExceptionHandler;
-import com.christmas.letter.exception.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,17 +13,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
 @Component
-@AllArgsConstructor
+//@AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     public static final String AUTH_HEADER_NAME = "Authorization";
     public static final String AUTH_HEADER_VALUE_PREFIX = "Bearer ";
 
-    private final JwtService jwtService;
-    private final UserInfoService userInfoService;
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver exceptionResolver;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -37,29 +44,32 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader(AUTH_HEADER_NAME);
-        if(authHeader == null || !authHeader.startsWith(AUTH_HEADER_VALUE_PREFIX))
-            throw new UnauthorizedException(GlobalExceptionHandler.UNAUTHORIZED_MESSAGE);
-
         try {
-            String token = authHeader.substring(7);
-            String username = jwtService.extractUsername(token);
+            String username = null;
+            String token = null;
+            String authHeader = request.getHeader(AUTH_HEADER_NAME);
+
+            if (authHeader != null && authHeader.startsWith(AUTH_HEADER_VALUE_PREFIX)) {
+                token = authHeader.substring(7);
+                username = jwtService.extractUsername(token);
+            }
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if(username != null || authentication == null) {
+            if (username != null || authentication == null) {
                 authenticate(username, token, request);
             }
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            throw new UnauthorizedException(GlobalExceptionHandler.UNAUTHORIZED_MESSAGE);
+            exceptionResolver.resolveException(request, response, null, e);
         }
     }
 
     private void authenticate(String username, String token, HttpServletRequest request) {
         UserDetails userDetails = userInfoService.loadUserByUsername(username);
 
-        if(jwtService.validateToken(token, userDetails)) {
+        if (jwtService.validateToken(token, userDetails)) {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                     null,
                     userDetails.getAuthorities());

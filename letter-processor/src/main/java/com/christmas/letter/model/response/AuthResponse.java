@@ -1,6 +1,5 @@
 package com.christmas.letter.model.response;
 
-import com.christmas.letter.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +13,5 @@ public class AuthResponse {
 
     private String token;
 
-    private List<Role> roles;
+    private List<String> roles;
 }

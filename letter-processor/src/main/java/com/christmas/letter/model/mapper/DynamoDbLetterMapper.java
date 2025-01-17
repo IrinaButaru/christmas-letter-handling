@@ -1,7 +1,7 @@
 package com.christmas.letter.model.mapper;
 
-import com.christmas.letter.model.Letter;
-import com.christmas.letter.model.LetterEntity;
+import com.christmas.letter.model.dto.Letter;
+import com.christmas.letter.model.entity.LetterEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;

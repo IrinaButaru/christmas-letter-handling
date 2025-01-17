@@ -1,6 +1,5 @@
-package com.christmas.letter.processor.helper;
+package com.christmas.letter.processor.security;
 
-import com.christmas.letter.service.JwtService;
 import com.christmas.letter.service.UserInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,10 +15,6 @@ public final class WithUserDetailsSecurityContextFactory implements WithSecurity
 
     private final UserInfoService userInfoService;
 
-    private JwtService jwtService;
-
-    public static String token;
-
     @Override
     public SecurityContext createSecurityContext(WithUserDetails annotation) {
         String username = annotation.value();
@@ -30,8 +25,6 @@ public final class WithUserDetailsSecurityContextFactory implements WithSecurity
                 principal.getAuthorities());
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(authentication);
-
-        token = "Bearer " + jwtService.generateToken(username);
         return securityContext;
     }
 }

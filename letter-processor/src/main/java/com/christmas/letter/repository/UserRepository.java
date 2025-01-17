@@ -1,6 +1,6 @@
 package com.christmas.letter.repository;
 
-import com.christmas.letter.model.UserEntity;
+import com.christmas.letter.model.entity.UserEntity;
 import org.socialsignin.spring.data.dynamodb.repository.DynamoDBCrudRepository;
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.springframework.stereotype.Repository;

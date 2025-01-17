@@ -25,7 +25,7 @@ awslocal sqs set-queue-attributes \
 --endpoint-url http://localhost:4566 \
 --queue-url http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/christmas-letters-queue \
 --attributes '{
-    "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:christmas-letters-dlq\",\"maxReceiveCount\":\"1\"}"
+    "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:christmas-letters-dlq\",\"maxReceiveCount\":\"3\"}"
 }'
 
 #Create DynamoDB christmas_letter table

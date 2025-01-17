@@ -6,6 +6,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.christmas.letter.repository.LetterRepository;
+import com.christmas.letter.repository.UserRepository;
 import lombok.Data;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@EnableDynamoDBRepositories(basePackageClasses = LetterRepository.class)
+@EnableDynamoDBRepositories(basePackageClasses = {LetterRepository.class, UserRepository.class})
 public class AWSDynamoDBConfig {
 
     @Value("${spring.cloud.aws.sqs.region}")
