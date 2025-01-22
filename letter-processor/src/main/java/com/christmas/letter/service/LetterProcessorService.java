@@ -22,10 +22,7 @@ public class LetterProcessorService {
 
     private final LetterRepository letterRepository;
 
-//    public LetterProcessorService(LetterRepository letterRepository) {
-//        this.letterRepository = letterRepository;
-//    }
-
+//    @CachePut(value = RedisCacheConfig.LETTER_CACHE_NAME, key = RedisCacheConfig.NEW_LETTER_CACHE_KEY)
     public Letter saveLetter(LetterEntity letterEntity) {
         return DynamoDbLetterMapper.INSTANCE.entitytoObject(letterRepository.save(letterEntity));
     }
