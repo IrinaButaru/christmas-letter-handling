@@ -3,6 +3,8 @@ spring:
     host: dummy
     username: test@mail.com
     password: test
+  cache:
+    ttl: 720
 
 com:
   christmas:

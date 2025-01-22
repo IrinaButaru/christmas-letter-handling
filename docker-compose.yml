@@ -15,5 +15,9 @@ services:
     volumes:
       - './docker-local/localstack/localstack-setup.sh:/etc/localstack/init/ready.d/localstack-setup.sh'
 
-
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
 
