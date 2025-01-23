@@ -45,7 +45,7 @@ public class LetterEmailService {
             javaMailSender.send(mailMessage);
             log.info(SENT_EMAIL_LOG);
         } catch (Exception e) {
-            log.error("Could not send email: " + e.getStackTrace());
+            log.error("Could not send email: ",e);
             throw new IllegalStateException("Could not send email");
         }
     }
