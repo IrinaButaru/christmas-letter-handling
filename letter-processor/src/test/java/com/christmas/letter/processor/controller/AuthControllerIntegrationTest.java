@@ -41,7 +41,7 @@ public class AuthControllerIntegrationTest extends LocalStackTestContainer {
         userRepository.deleteAll();
     }
 
-    @Test()
+    @Test
     @WithMockUser
     public void authenticateUser_WhenBadRequest_ShouldReturnErrorResponse() throws Exception {
         mockMvc.perform(post("/auth/login")
@@ -54,7 +54,7 @@ public class AuthControllerIntegrationTest extends LocalStackTestContainer {
                 .andExpect(jsonPath("$.reasons", hasItem("email.must.be.valid")));
     }
 
-    @Test()
+    @Test
     @WithMockUser
     public void authenticateUser_WhenOK_ShouldReturnAuthResponse() throws Exception {
         mockMvc.perform(post("/auth/login")
